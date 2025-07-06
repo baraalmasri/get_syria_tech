@@ -10,7 +10,7 @@ echo "🚀 Starting Phone Shop deployment..."
 # Configuration
 PROJECT_NAME="phone_shop"
 PROJECT_DIR="/var/www/$PROJECT_NAME"
-REPO_URL="https://github.com/yourusername/phone_shop.git"  # Update with your repo
+REPO_URL="https://github.com/baraalmasri/get_syria_tech.git"  # Update with your repo
 PYTHON_VERSION="3.11"
 DB_NAME="phone_shop_db"
 DB_USER="phone_shop_user"
@@ -113,7 +113,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 
 print_status "Setting up SSL certificate..."
-sudo certbot --nginx -d fromsyria.tech -d www.fromsyria.tech
+sudo certbot --nginx -d getsyria.tech -d www.getsyria.tech
 
 print_status "Setting up firewall..."
 sudo ufw allow 'Nginx Full'
@@ -147,7 +147,7 @@ sudo systemctl restart phone_shop
 sudo systemctl restart nginx
 
 print_status "Deployment completed successfully! 🎉"
-print_status "Your website should now be available at: https://fromsyria.tech"
+print_status "Your website should now be available at: https://getsyria.tech"
 print_status ""
 print_status "Next steps:"
 print_status "1. Edit .env file with your production settings"
@@ -159,5 +159,5 @@ print_status "Useful commands:"
 print_status "- Check service status: sudo systemctl status phone_shop"
 print_status "- View logs: sudo journalctl -u phone_shop -f"
 print_status "- Restart application: sudo systemctl restart phone_shop"
-print_status "- Django admin: https://fromsyria.tech/admin/"
+print_status "- Django admin: https://getsyria.tech/admin/"
 
