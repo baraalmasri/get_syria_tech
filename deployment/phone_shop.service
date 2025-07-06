@@ -1,0 +1,22 @@
+[Unit]
+Description=Phone Shop Django Application
+After=network.target postgresql.service redis.service
+Wants=postgresql.service redis.service
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/phone_shop
+Environment=DJANGO_SETTINGS_MODULE=phone_shop.settings_production
+ExecStart=/var/www/phone_shop/venv/bin/gunicorn --config /var/www/phone_shop/gunicorn.conf.py phone_shop.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

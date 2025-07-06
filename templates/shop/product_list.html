@@ -1,0 +1,578 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if category %}{{ category.name }} - {% endif %}Phone Accessories - Get Syria Tech
+{% endblock %}
+
+{% block meta_description %}
+    {% if category %}
+        Shop {{ category.name|lower }} from top brands. Premium quality phone accessories with fast shipping from Get Syria Tech.
+    {% else %}
+        Browse our complete collection of phone accessories including cases, chargers, screen protectors and more.
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .categories-nav {
+        background: var(--secondary-color);
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+        border-radius: var(--border-radius);
+    }
+    
+    .categories-list {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+        overflow-x: auto;
+        padding: 0.5rem;
+    }
+    
+    .category-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: var(--text-primary);
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        white-space: nowrap;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .category-link:hover,
+    .category-link.active {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .filters-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .filter-select {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background: white;
+        font-size: 0.875rem;
+    }
+    
+    .results-info {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+    
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .product-card {
+        background: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        position: relative;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .product-image {
+        width: 100%;
+        height: 250px;
+        background: var(--secondary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: var(--text-secondary);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .product-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--accent-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .product-info {
+        padding: 1.5rem;
+    }
+    
+    .product-category {
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+    }
+    
+    .product-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+    
+    .product-title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .product-title a:hover {
+        color: var(--primary-color);
+    }
+    
+    .product-description {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+    
+    .product-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .product-stock {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .stock-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent-color);
+    }
+    
+    .stock-indicator.low {
+        background: #f59e0b;
+    }
+    
+    .stock-indicator.out {
+        background: #ef4444;
+    }
+    
+    .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .product-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .add-to-cart-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .add-to-cart-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+    }
+    
+    .add-to-cart-btn:disabled {
+        background: var(--text-secondary);
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .no-products {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+    }
+    
+    .no-products-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+    }
+    
+    .pagination a,
+    .pagination span {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: var(--transition);
+    }
+    
+    .pagination a:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .pagination .current {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .categories-list {
+            justify-content: flex-start;
+        }
+        
+        .filters-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .filter-group {
+            justify-content: space-between;
+        }
+        
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .product-card {
+            max-width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+{% if not category %}
+<section class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">Premium Phone Accessories</h1>
+        <p class="hero-subtitle">
+            Discover our curated collection of high-quality phone accessories from trusted brands. 
+            Protect and enhance your device with style.
+        </p>
+    </div>
+</section>
+{% endif %}
+
+<!-- Categories Navigation -->
+<nav class="categories-nav">
+    <div class="container">
+        <ul class="categories-list">
+            <li>
+                <a href="{% url 'shop:product_list' %}" 
+                   class="category-link {% if not category %}active{% endif %}">
+                    <i class="fas fa-th-large"></i>
+                    All Products
+                </a>
+            </li>
+            {% for cat in categories %}
+            <li>
+                <a href="{{ cat.get_absolute_url }}" 
+                   class="category-link {% if category.slug == cat.slug %}active{% endif %}">
+                    {% if cat.name == 'Phone Cases' %}
+                        <i class="fas fa-mobile-alt"></i>
+                    {% elif cat.name == 'Screen Protectors' %}
+                        <i class="fas fa-shield-alt"></i>
+                    {% elif cat.name == 'Chargers & Cables' %}
+                        <i class="fas fa-plug"></i>
+                    {% elif cat.name == 'Power Banks' %}
+                        <i class="fas fa-battery-three-quarters"></i>
+                    {% elif cat.name == 'Headphones & Audio' %}
+                        <i class="fas fa-headphones"></i>
+                    {% elif cat.name == 'Car Accessories' %}
+                        <i class="fas fa-car"></i>
+                    {% elif cat.name == 'Wireless Chargers' %}
+                        <i class="fas fa-wifi"></i>
+                    {% else %}
+                        <i class="fas fa-mobile"></i>
+                    {% endif %}
+                    {{ cat.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Filters and Results Info -->
+<div class="filters-section">
+    <div class="filter-group">
+        <select class="filter-select" onchange="filterProducts(this.value)">
+            <option value="">Sort by</option>
+            <option value="name">Name A-Z</option>
+            <option value="-name">Name Z-A</option>
+            <option value="price">Price Low to High</option>
+            <option value="-price">Price High to Low</option>
+            <option value="-created">Newest First</option>
+        </select>
+        
+        <select class="filter-select" onchange="filterByBrand(this.value)">
+            <option value="">All Brands</option>
+            <option value="apple">Apple</option>
+            <option value="samsung">Samsung</option>
+            <option value="huawei">Huawei</option>
+            <option value="xiaomi">Xiaomi</option>
+            <option value="universal">Universal</option>
+        </select>
+    </div>
+    
+    <div class="results-info">
+        {% if category %}
+            Showing {{ products|length }} products in "{{ category.name }}"
+        {% else %}
+            Showing {{ products|length }} products
+        {% endif %}
+    </div>
+</div>
+
+<!-- Products Grid -->
+{% if products %}
+<div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="product-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <i class="fas fa-mobile-alt"></i>
+            {% endif %}
+            
+            {% if product.stock_quantity < 10 and product.stock_quantity > 0 %}
+                <div class="product-badge">Low Stock</div>
+            {% elif product.stock_quantity == 0 %}
+                <div class="product-badge" style="background: #ef4444;">Out of Stock</div>
+            {% endif %}
+        </div>
+        
+        <div class="product-info">
+            <div class="product-category">{{ product.category.name }}</div>
+            
+            <h3 class="product-title">
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            </h3>
+            
+            <p class="product-description">{{ product.description|truncatewords:15 }}</p>
+            
+            <div class="product-meta">
+                <div class="product-brand">
+                    <i class="fas fa-tag"></i>
+                    {{ product.get_compatible_brand_display }}
+                </div>
+                
+                <div class="product-stock">
+                    <span class="stock-indicator {% if product.stock_quantity < 10 %}low{% elif product.stock_quantity == 0 %}out{% endif %}"></span>
+                    {% if product.stock_quantity > 0 %}
+                        {{ product.stock_quantity }} in stock
+                    {% else %}
+                        Out of stock
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="product-footer">
+                <div class="product-price">${{ product.price }}</div>
+                
+                <form method="post" action="{% url 'cart:cart_add' product.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="add-to-cart-btn" 
+                            {% if not product.is_in_stock %}disabled{% endif %}>
+                        <i class="fas fa-cart-plus"></i>
+                        {% if product.is_in_stock %}Add to Cart{% else %}Out of Stock{% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="no-products">
+    <div class="no-products-icon">
+        <i class="fas fa-search"></i>
+    </div>
+    <h3>No products found</h3>
+    <p>
+        {% if category %}
+            No products available in "{{ category.name }}" category.
+        {% else %}
+            No products match your search criteria.
+        {% endif %}
+    </p>
+    <a href="{% url 'shop:product_list' %}" class="btn btn-primary" style="margin-top: 1rem;">
+        <i class="fas fa-arrow-left"></i>
+        Browse All Products
+    </a>
+</div>
+{% endif %}
+
+<!-- Pagination (placeholder for future implementation) -->
+{% comment %}
+<div class="pagination">
+    <a href="#" class="prev">Previous</a>
+    <span class="current">1</span>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#" class="next">Next</a>
+</div>
+{% endcomment %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterProducts(sortBy) {
+        if (sortBy) {
+            const url = new URL(window.location);
+            url.searchParams.set('sort', sortBy);
+            window.location.href = url.toString();
+        }
+    }
+    
+    function filterByBrand(brand) {
+        if (brand) {
+            const url = new URL(window.location);
+            url.searchParams.set('brand', brand);
+            window.location.href = url.toString();
+        } else {
+            const url = new URL(window.location);
+            url.searchParams.delete('brand');
+            window.location.href = url.toString();
+        }
+    }
+    
+    // Add smooth scroll animation for category navigation
+    document.querySelectorAll('.category-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Add loading state
+            this.style.opacity = '0.7';
+            setTimeout(() => {
+                this.style.opacity = '1';
+            }, 300);
+        });
+    });
+    
+    // Add to cart animation
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.disabled) {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                this.disabled = true;
+                
+                // Re-enable after form submission
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
+                }, 500);
+            }
+        });
+    });
+</script>
+{% endblock %}
+

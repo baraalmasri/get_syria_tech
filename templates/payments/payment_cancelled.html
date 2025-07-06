@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled - Get Syria Tech{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Cancelled Icon -->
+        <div class="mb-8">
+            <div class="mx-auto w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Cancelled Message -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Payment Cancelled</h1>
+        <p class="text-lg text-gray-600 mb-8">
+            Your payment was cancelled. No charges have been made to your account.
+        </p>
+        
+        <!-- Information Box -->
+        <div class="bg-yellow-50 rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-yellow-900 mb-2">What happened?</h3>
+            <p class="text-yellow-700 mb-4">
+                You cancelled the payment process before it was completed. Your items are still in your cart if you'd like to try again.
+            </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'cart:cart_detail' %}" 
+               class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-200 font-medium">
+                Return to Cart
+            </a>
+            <a href="{% url 'shop:product_list' %}" 
+               class="bg-gray-200 text-gray-800 px-6 py-3 rounded-md hover:bg-gray-300 transition duration-200 font-medium">
+                Continue Shopping
+            </a>
+        </div>
+        
+        <!-- Help Section -->
+        <div class="mt-8 text-sm text-gray-500">
+            <p>Need help? <a href="mailto:support@fromsyria.tech" class="text-blue-600 hover:text-blue-800">Contact our support team</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
