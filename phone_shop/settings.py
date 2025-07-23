@@ -153,10 +153,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Stripe settings
-STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
-STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET', default='')
+# Payeer settings
+PAYEER_MERCHANT_ID = config('PAYEER_MERCHANT_ID', default='YOUR_MERCHANT_ID')
+PAYEER_SECRET_KEY = config('PAYEER_SECRET_KEY', default='YOUR_SECRET_KEY')
 
 # Email settings for order confirmations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
